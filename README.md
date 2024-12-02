@@ -1,0 +1,1 @@
+# fastapi-crud_2.12.24
