@@ -20,7 +20,7 @@ async def add_room(payload: DoctorSchema):
     return response_object
 
 @router.get("/{id}/", response_model=DoctorDB)
-async def read_doctor(id: int ):
+async def read_room(id: int ):
     doctor = await crud.get_doctors(id)
     if not doctor:
         raise HTTPException(status_code=404, detail="Doctor not found")
