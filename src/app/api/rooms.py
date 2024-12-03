@@ -7,7 +7,7 @@ router = APIRouter()
 
 
 @router.post("/", response_model=DoctorDB, status_code=201)
-async def add_doctor(payload: DoctorSchema):
+async def add_room(payload: DoctorSchema):
     doctor_id = await crud.post_doctors(payload)
 
     response_object = {
