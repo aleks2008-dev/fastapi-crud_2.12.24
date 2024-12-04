@@ -1,76 +1,67 @@
 from fastapi import APIRouter, HTTPException
 from app.api import crud
-from app.api.models import DoctorDB, DoctorSchema
+from app.api.models import RoomDB, RoomSchema
 from typing import List
 
 router = APIRouter()
 
 
-@router.post("/", response_model=DoctorDB, status_code=201)
-async def add_room(payload: DoctorSchema):
-    doctor_id = await crud.post_doctors(payload)
+@router.post("/", response_model=RoomDB, status_code=201)
+async def add_room(payload: RoomSchema):
+    room_id = await crud.post_rooms(payload)
 
     response_object = {
-        "id": doctor_id,
-        "name": payload.name,
-        "surname": payload.surname,
-        "category": payload.category,
-        "speciality": payload.speciality,
+        "id": room_id,
+        "number": payload.number,
     }
     return response_object
 
-@router.get("/{id}/", response_model=DoctorDB)
+@router.get("/{id}/", response_model=RoomDB)
 async def read_room(id: int ):
-    doctor = await crud.get_doctors(id)
-    if not doctor:
-        raise HTTPException(status_code=404, detail="Doctor not found")
-    return doctor
+    room = await crud.get_rooms(id)
+    if not room:
+        raise HTTPException(status_code=404, detail="Room not found")
+    return room
 
-@router.get("/", response_model=List[DoctorDB])
-async def read_all_doctors():
-    return await crud.get_all_doctors()
+@router.get("/", response_model=List[RoomDB])
+async def read_all_rooms():
+    return await crud.get_all_rooms()
 
 
-@router.put("/{id}/", response_model=DoctorDB)
-async def update_doctor(id: int, payload: DoctorSchema):
-    doctor = await crud.get_doctors(id)
-    if not doctor:
-        raise HTTPException(status_code=404, detail="Doctor not found")
+@router.put("/{id}/", response_model=RoomDB)
+async def update_room(id: int, payload: RoomSchema):
+    room = await crud.get_rooms(id)
+    if not room:
+        raise HTTPException(status_code=404, detail="Room not found")
 
-    doctor_id = await crud.put_doctors(id, payload)
+    room = await crud.put_rooms(id, payload)
 
     response_object = {
-        "id": doctor_id,
-        "name": payload.name,
-        "surname": payload.surname,
-        "category": payload.category,
-        "speciality": payload.speciality,
+        "id": room_id,
+        "number": payload.number,
     }
     return response_object
 
-@router.patch("/{id}/", response_model=DoctorDB)
-async def update_doctor_patch(id: int, payload: DoctorSchema):
-    doctor = await crud.get_doctors(id)
-    if not doctor:
-        raise HTTPException(status_code=404, detail="Doctor not found")
+@router.patch("/{id}/", response_model=RoomDB)
+async def update_room_patch(id: int, payload: RoomSchema):
+    room = await crud.get_rooms(id)
+    if not room:
+        raise HTTPException(status_code=404, detail="Room not found")
 
-    doctor_id = await crud.patch_doctors(id, payload)
+    room_id = await crud.patch_rooms(id, payload)
 
     response_object = {
-        "id": doctor_id,
-        "name": payload.name,
-        "surname": payload.surname,
-        "category": payload.category,
-        "speciality": payload.speciality,
+        "id": room_id,
+        "number": payload.number,
     }
     return response_object
 
-@router.delete("/{id}/", response_model=DoctorDB)
-async def delete_doctor(id: int ):
-    doctor = await crud.delete_doctor(id)
-    if not doctor:
-        raise HTTPException(status_code=404, detail="Doctor not found")
+@router.delete("/{id}/", response_model=RoomDB)
+async def delete_room(id: int ):
+    room = await crud.delete_room(id)
+    if not room:
+        raise HTTPException(status_code=404, detail="Room not found")
 
-    await crud.delete_doctor(id)
+    await crud.delete_room(id)
 
-    return doctor
+    return room
