@@ -10,7 +10,7 @@ class DoctorDB(DoctorSchema):
     id: int
 
 class ClientSchema(BaseModel):
-    name: constr(min_length=1, max_length=20)
+    name: constr(min_length=1, max_length=25)
     surname: constr(min_length=1, max_length=20)
     email: str
     age: conint(ge=0)
