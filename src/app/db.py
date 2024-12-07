@@ -12,6 +12,7 @@ from sqlalchemy import (
 from sqlalchemy.sql import func
 
 from databases import Database
+#from sqlalchemy.orm import mapped_column
 
 DATABASE_URL = os.getenv("DATABASE_URL")
 engine = create_engine(DATABASE_URL)
