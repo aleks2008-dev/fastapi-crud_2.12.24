@@ -1,30 +1,24 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, Depends
 from app.api import doctors, clients, appointments, rooms
 from app.db import database, engine, metadata
 from contextlib import asynccontextmanager
+import asyncio
 
-metadata.create_all(engine)
-
-#app = FastAPI()
-
-
-#@app.on_event("startup")
-#async def startup():
-    #await database.connect()
-
-
-#@app.on_event("shutdown")
-#async def shutdown():
-    #await database.disconnect()
+app = FastAPI()
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    await database.connect()
-    yield
-    await database.disconnect()
+    # Startup - creating resources like database connection
+    print("Starting up...")
+    await asyncio.sleep(1)  # Simulating startup delay
 
+    yield  # This line divides startup and shutdown
 
-app = FastAPI(lifespan=lifespan)
+    # Shutdown - cleanup resources
+    print("Shutting down...")
+    await asyncio.sleep(1)  # Simulating shutdown delay
+
+app.add_event_handler("lifespan", lifespan)
 
 app.include_router(doctors.router, prefix="/doctors", tags=["doctors"])
 app.include_router(clients.router, prefix="/clients", tags=["clients"])

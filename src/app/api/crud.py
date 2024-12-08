@@ -1,5 +1,6 @@
 from app.api.models import DoctorSchema, ClientSchema, AppointmentSchema, RoomSchema
-from app.db import doctors, database, clients, appointments, rooms
+from app.db import database
+from app.models import doctors, clients, appointments, rooms
 
 
 async def post_doctors(payload: DoctorSchema):
