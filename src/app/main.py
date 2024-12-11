@@ -1,6 +1,7 @@
-from fastapi import FastAPI, Depends
+from fastapi import FastAPI
 from app.api import doctors, clients, appointments, rooms
-from app.db import database, engine, metadata
+from .db import database, engine, metadata, Base
+from .models import SessionLocal
 from contextlib import asynccontextmanager
 import asyncio
 
@@ -8,15 +9,18 @@ app = FastAPI()
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    # Startup - creating resources like database connection
     print("Starting up...")
-    await asyncio.sleep(1)  # Simulating startup delay
-
-    yield  # This line divides startup and shutdown
-
-    # Shutdown - cleanup resources
+    Base.metadata.create_all(bind=engine)  # Create tables
+    yield  # This is where the app runs
     print("Shutting down...")
-    await asyncio.sleep(1)  # Simulating shutdown delay
+    await asyncio.sleep(1)
+
+def get_db():
+    db = SessionLocal()
+    try:
+        yield db
+    finally:
+        db.close()
 
 app.add_event_handler("lifespan", lifespan)
 
